@@ -1,0 +1,6 @@
+#!/bin/sh
+
+dev=$1
+
+ip link set $dev down
+ip link del $dev

@@ -1,0 +1,17 @@
+[Unit]
+Description=WireGuard interface %I
+After=network-online.target nss-lookup.target systemd-resolved.service
+Wants=network-online.target nss-lookup.target systemd-resolved.service
+Documentation=man:wg(8)
+Documentation=https://www.wireguard.com/
+Documentation=https://git.zx2c4.com/WireGuard/about/src/tools/man/wg.8
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+EnvironmentFile=/etc/wireguard/%I.env
+ExecStart=/usr/local/bin/wg-up %I ${WG_ADDRESS}
+ExecStop=/usr/local/bin/wg-down %I
+
+[Install]
+WantedBy=multi-user.target

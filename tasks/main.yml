@@ -1,0 +1,50 @@
+---
+- name: enable ip forwarding
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
+    state: present
+    sysctl_set: true
+
+- name: install wireguard
+  package:
+    name: "{{ wg_package_name }}"
+
+- name: install wireguard helper scripts
+  copy:
+    src: "{{ item }}"
+    dest: "/usr/local/bin/{{ item }}"
+    mode: "0755"
+  loop:
+    - wg-up
+    - wg-down
+
+- name: install wireguard systemd template unit
+  copy:
+    src: wg@.service
+    dest: /etc/systemd/system/wg@.service
+    mode: "0644"
+  notify:
+    - reload-systemd
+    - restart-wg0
+
+- name: create wireguard interface configuration
+  template:
+    src: wg.j2.conf
+    dest: "{{ wg_interface_config }}"
+  notify:
+    - restart-wg0
+
+- name: create wireguard environment configuration
+  template:
+    src: wg.j2.env
+    dest: "{{ wg_environment_config }}"
+  notify:
+    - restart-wg0
+
+- name: create wireguard route configuration
+  template:
+    src: wg.j2.routes
+    dest: "{{ wg_route_config }}"
+  notify:
+    - restart-wg0

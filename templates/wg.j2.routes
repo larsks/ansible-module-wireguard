@@ -1,0 +1,5 @@
+{% for peer in groups.vpn if peer != inventory_hostname %}
+{% for route in hostvars[peer].wg_routes|default([]) %}
+{{ route }}
+{% endfor %}
+{% endfor %}

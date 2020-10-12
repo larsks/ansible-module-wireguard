@@ -1,0 +1,18 @@
+#!/bin/sh
+
+dev=$1
+addr=$2
+
+ip link add $dev type wireguard
+ip addr add $addr dev $dev
+
+wg setconf $dev /etc/wireguard/$dev.conf
+
+ip link set $dev  up
+
+if [ -f /etc/wireguard/$dev.routes ]; then
+	egrep -v '^$|^#' /etc/wireguard/$dev.routes |
+	while read route; do
+		ip route add $route dev $dev
+	done
+fi

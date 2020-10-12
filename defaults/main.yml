@@ -1,0 +1,6 @@
+---
+wg_listen_port: '50001'
+wg_interface_config: /etc/wireguard/wg0.conf
+wg_environment_config: /etc/wireguard/wg0.env
+wg_route_config: /etc/wireguard/wg0.routes
+wg_package_name: wireguard

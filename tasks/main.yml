@@ -54,3 +54,9 @@
     name: wg@wg0.service
     enabled: true
     state: started
+
+- name: install dnsmasq configuration
+  template:
+    src: vpn_dns_servers.j2.conf
+    dest: "{{ wg_nm_dnsmasq_dir }}/vpn_dns_servers.conf"
+  notify: reload-networkmanager

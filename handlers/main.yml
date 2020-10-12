@@ -3,3 +3,10 @@
 
 - name: restart-wg0
   command: systemctl restart wg@wg0
+
+- name: reload-networkmanager
+  command: >-
+    /usr/bin/dbus-send --system --type=method_call \
+    --dest=org.freedesktop.NetworkManager \
+    /org/freedesktop/NetworkManager \
+    org.freedesktop.NetworkManager.Reload uint32:4

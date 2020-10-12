@@ -48,3 +48,9 @@
     dest: "{{ wg_route_config }}"
   notify:
     - restart-wg0
+
+- name: enable wg0
+  service:
+    name: wg@wg0.service
+    enabled: true
+    state: started

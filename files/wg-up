@@ -2,6 +2,7 @@
 
 dev=$1
 addr=$2
+metric=${WG_ROUTE_METRIC:-900}
 
 ip link add $dev type wireguard
 ip addr add $addr dev $dev
@@ -13,6 +14,6 @@ ip link set $dev  up
 if [ -f /etc/wireguard/$dev.routes ]; then
 	egrep -v '^$|^#' /etc/wireguard/$dev.routes |
 	while read route; do
-		ip route add $route dev $dev
+		ip route add $route dev $dev metric $metric
 	done
 fi
